@@ -15,6 +15,8 @@
 
 #include <iostream>
 
+namespace ft
+{
 template<class T, class Alloc = std::allocator<T> > class vector
 {
 	public:
@@ -92,6 +94,7 @@ typename vector<T, Alloc>::value_type	&vector<T, Alloc>::operator[](size_type i)
 }
 
 // Non-member function overloads
+}
 
 #endif
 
