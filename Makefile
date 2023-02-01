@@ -25,7 +25,7 @@ DEPS		=	${addprefix ${OBJ_PATH},${SRC:.cpp=.d}}
 all:${NAME}
 
 clean:
-	${RM} ${OBJ_PATH}
+	${RM} ${OBJ_PATH} .vscode
 
 fclean:clean
 	${RM} ${NAME}
@@ -37,6 +37,10 @@ run:${NAME}
 	clear
 	./${NAME}
 
+debug:${NAME}
+	clear
+	valgrind ./${NAME}
+
 ${OBJ_PATH}%.o:${SRC_PATH}%.cpp
 	${CPP} ${CPPFLAGS} ${INC} -c $< -o $@
 
@@ -46,6 +50,6 @@ ${OBJ_DIRS}:
 ${NAME}:${OBJ_DIRS} ${OBJ}
 	${CPP} ${OBJ} -o $@
 
-.PHONY:all clean fclean re run
+.PHONY:all clean fclean re run debug
 
 -include ${DEPS}
