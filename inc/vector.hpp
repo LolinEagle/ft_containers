@@ -99,23 +99,28 @@ namespace ft
 #endif
 
 /* To do: */
+
 /* Member functions: */
 // (constructor) 2 / 4
+
 /* Iterators: */
 // begin
 // end
 // rbegin
 // rend
+
 /* Capacity: */
 // resize
 // capacity
 // empty
 // reserve
+
 /* Element access: */
 // operator[]
 // at
 // front
 // back
+
 /* Modifiers: */
 // assign
 // push_back
@@ -124,8 +129,10 @@ namespace ft
 // erase
 // swap
 // clear
+
 /* Allocator: */
 // get_allocator
+
 /* Non-member function overloads: */
 // relational operators
 // swap
