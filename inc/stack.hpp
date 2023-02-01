@@ -10,4 +10,62 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef STACK_HPP
+#define STACK_HPP
 
+#include <iostream>
+
+// Debug
+#include <vector>
+
+namespace ft
+{
+	template<class T, class Container = std::vector<T> > class stack
+	{
+		
+	};
+
+	template <class T, class Container>
+	bool operator==(const stack<T, Container>& x, const stack<T, Container>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Container>
+	bool operator< (const stack<T, Container>& x, const stack<T, Container>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Container>
+	bool operator!=(const stack<T, Container>& x, const stack<T, Container>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Container>
+	bool operator> (const stack<T, Container>& x, const stack<T, Container>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Container>
+	bool operator>=(const stack<T, Container>& x, const stack<T, Container>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Container>
+	bool operator<=(const stack<T, Container>& x, const stack<T, Container>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+}
+
+#endif

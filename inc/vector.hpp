@@ -17,12 +17,12 @@
 
 namespace ft
 {
-	template<class T, class Alloc = std::allocator<T> > class vector
+	template<class T, class Allocator = std::allocator<T> > class vector
 	{
 		public:
 			// Member types
 			typedef T											value_type;
-			typedef Alloc										allocator_type;
+			typedef Allocator									allocator_type;
 			typedef typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::pointer			pointer;
@@ -60,8 +60,8 @@ namespace ft
 			// Allocator
 	};
 
-	template<class T, class Alloc> vector<T, Alloc>::vector(void) :
-	_value(NULL), _size(0), _max_size(0)
+	template<class T, class Alloc>
+	vector<T, Alloc>::vector(void) : _value(NULL), _size(0), _max_size(0)
 	{
 	}
 
@@ -93,7 +93,56 @@ namespace ft
 		return (_value[i]);
 	}
 
-	// Non-member function overloads
+	/* Non-member function overloads **************************************** */
+
+	template <class T, class Allocator>
+	bool operator==(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Allocator>
+	bool operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Allocator>
+	bool operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Allocator>
+	bool operator> (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Allocator>
+	bool operator>=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Allocator>
+	bool operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		(void)x, y;
+		return (false);
+	}
+
+	template <class T, class Allocator>
+	void swap(vector<T,Allocator>& x, vector<T,Allocator>& y)
+	{
+		(void)x, y;
+		return ;
+	}
 }
 
 #endif
