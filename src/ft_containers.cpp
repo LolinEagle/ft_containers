@@ -31,12 +31,20 @@ void	ft_vector(void)
 
 	std::cout << "size=" << fa.size() << "\tmax_size=" << fa.max_size() << std::endl;
 	std::cout << "size=" << va.size() << "\tmax_size=" << va.max_size() << std::endl;
-	
-	ft::vector<int>		fb(fa);
-	std::vector<int>	vb(va);
+	std::cout << std::endl;
 
-	std::cout << "size=" << fb.size() << "\tmax_size=" << fb.max_size() << std::endl;
-	std::cout << "size=" << vb.size() << "\tmax_size=" << vb.max_size() << std::endl;
+	ft::vector<int>		fb(8, 8);
+	std::vector<int>	vb(8, 8);
+
+	std::cout << "size=" << fb.size() << "\t[0]=" << fb[0] << std::endl;
+	std::cout << "size=" << vb.size() << "\t[0]=" << vb[0] << std::endl;
+	std::cout << std::endl;
+	
+	ft::vector<int>		fd(fa);
+	std::vector<int>	vd(va);
+
+	std::cout << "size=" << fd.size() << "\tmax_size=" << fd.max_size() << std::endl;
+	std::cout << "size=" << vd.size() << "\tmax_size=" << vd.max_size() << std::endl;
 }
 
 int		main(void)

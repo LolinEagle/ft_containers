@@ -41,9 +41,9 @@ namespace ft
 			explicit vector(const Allocator& alloc = Allocator());
 			explicit vector(size_type n, const T& value = T(),
 			const Allocator& = Allocator());
-			template <class InputIterator>
-			vector(InputIterator first, InputIterator last,
-			const Allocator& = Allocator());
+			// template <class InputIterator>
+			// vector(InputIterator first, InputIterator last,
+			// const Allocator& = Allocator());
 			vector(const vector<T,Allocator>& x);
 			~vector();
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
@@ -96,25 +96,34 @@ namespace ft
 
 	/* Constructor & Destructor ********************************************* */
 
-	template<class T, class Alloc>
-	vector<T, Alloc>::vector(const allocator_type& alloc)
+	template<class T, class Allocator>
+	vector<T, Allocator>::vector(const Allocator& alloc)
 	: _value(NULL), _size(0), _capacity(alloc.max_size())
 	{
 	}
 
-	template<class T, class Alloc>
-	vector<T, Alloc>::vector(const vector<T, Alloc> &copy)
+	template<class T, class Allocator>
+	vector<T, Allocator>::vector(size_type n, const T& value, const Allocator& alloc)
+	: _value(new T[n]), _size(n), _capacity(alloc.max_size())
+	{
+		for (size_t i = 0; i < n; i++)
+			_value[i] = value;
+	}
+
+	template<class T, class Allocator>
+	vector<T, Allocator>::vector(const vector<T, Allocator> &copy)
 	{
 		*this = copy;
 	}
 
-	template<class T, class Alloc> vector<T, Alloc>::~vector()
+	template<class T, class Allocator>
+	vector<T, Allocator>::~vector()
 	{
 		delete [] (_value);
 	}
 
-	template<class T, class Alloc>
-	vector<T, Alloc> &vector<T, Alloc>::operator=(const vector<T, Alloc> &copy)
+	template<class T, class Allocator>
+	vector<T, Allocator> &vector<T, Allocator>::operator=(const vector<T, Allocator> &copy)
 	{
 		_value = new T[copy._size];
 		for (size_t i = 0; i < copy._size; i++)
