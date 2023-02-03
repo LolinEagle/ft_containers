@@ -20,16 +20,16 @@ namespace ft
 template<class T, class Alloc = std::allocator<T> > class vector
 {
 	public:
-		typedef typename Alloc::reference			reference;
-		typedef typename Alloc::const_reference		const_reference;
+		typedef typename Alloc::reference				reference;
+		typedef typename Alloc::const_reference			const_reference;
 		typedef T*										iterator;
 		typedef const T*								const_iterator;
 		typedef std::size_t								size_type;
 		typedef std::ptrdiff_t							difference_type;
 		typedef T										value_type;
-		typedef Alloc								allocator_type;
-		typedef typename Alloc::pointer				pointer;
-		typedef typename Alloc::const_pointer		const_pointer;
+		typedef Alloc									allocator_type;
+		typedef typename Alloc::pointer					pointer;
+		typedef typename Alloc::const_pointer			const_pointer;
 		typedef std::reverse_iterator<iterator>			reverse_iterator;
 		typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
 	private:
@@ -74,7 +74,7 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		reference operator[](size_type n){return (_value[n]);}
 		const_reference operator[](size_type n) const{return (_value[n]);}
 		const_reference at(size_type n) const;
-		reference at(size_type n);
+		reference at(size_type n){return (_value[n]);}
 		reference front();
 		const_reference front() const;
 		reference back();
@@ -139,11 +139,24 @@ vector<T, Alloc> &vector<T, Alloc>::operator=(const vector<T, Alloc> &copy)
 
 /* Capacity ***************************************************************** */
 
+template<class T, class Alloc>
+void vector<T, Alloc>::resize(size_type sz, T c)
+{
+	(void)sz;
+	(void)c;
+}
+
+/* Element access *************************************************** */
+
 
 
 /* Modifiers **************************************************************** */
 
-
+template<class T, class Alloc>
+void push_back(const T& x)
+{
+	(void)x;
+}
 
 /* Non-member function overloads ******************************************** */
 
@@ -194,7 +207,7 @@ vector<T, Alloc> &vector<T, Alloc>::operator=(const vector<T, Alloc> &copy)
 /* To do: */
 
 /* Member functions: */
-// (constructor) 2 / 4
+// (constructor) 3 / 4
 
 /* Iterators: */
 // begin
@@ -209,8 +222,6 @@ vector<T, Alloc> &vector<T, Alloc>::operator=(const vector<T, Alloc> &copy)
 // reserve
 
 /* Element access: */
-// operator[]
-// at
 // front
 // back
 
@@ -229,3 +240,11 @@ vector<T, Alloc> &vector<T, Alloc>::operator=(const vector<T, Alloc> &copy)
 /* Non-member function overloads: */
 // relational operators
 // swap
+
+// std::iterator_traits
+// std::reverse_iterator
+// std::enable_if
+// std::is_integral
+// std::equal and/or std::lexicographical_compare
+// std::pair
+// std::make_pair
