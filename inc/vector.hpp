@@ -33,9 +33,10 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		typedef std::reverse_iterator<iterator>			reverse_iterator;
 		typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
 	private:
-		iterator	_value;
-		size_type	_size;
-		size_type	_capacity;
+		allocator_type	_alloc;
+		iterator		_begin;
+		iterator		_end;
+		size_type		_size;
 	public:
 		/* Constructor & Destructor ***************************************** */
 		explicit vector(const Alloc& alloc = Alloc());
@@ -53,8 +54,8 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		allocator_type get_allocator() const;
 
 		/* Iterators ******************************************************** */
-		iterator begin(){return(_value);}
-		const_iterator begin() const{return(_value);}
+		iterator begin(){return(_begin);}
+		const_iterator begin() const{return(_begin);}
 		iterator end();
 		const_iterator end() const;
 		reverse_iterator rbegin();
@@ -64,17 +65,17 @@ template<class T, class Alloc = std::allocator<T> > class vector
 
 		/* Capacity ********************************************************* */
 		size_type size() const{return(_size);}
-		size_type max_size() const{return(_capacity);}
+		size_type max_size() const{return(_alloc.max_size());}
 		void resize(size_type sz, T c = T());
 		size_type capacity() const;
 		bool empty() const;
 		void reserve(size_type n);
 
 		/* Element access *************************************************** */
-		reference operator[](size_type n){return (_value[n]);}
-		const_reference operator[](size_type n) const{return (_value[n]);}
+		reference operator[](size_type n){return (_begin[n]);}
+		const_reference operator[](size_type n) const{return (_begin[n]);}
 		const_reference at(size_type n) const;
-		reference at(size_type n){return (_value[n]);}
+		reference at(size_type n){return (_begin[n]);}
 		reference front();
 		const_reference front() const;
 		reference back();
@@ -98,16 +99,18 @@ template<class T, class Alloc = std::allocator<T> > class vector
 
 template<class T, class Alloc>
 vector<T, Alloc>::vector(const Alloc& alloc)
-: _value(NULL), _size(0), _capacity(alloc.max_size())
+: _alloc(alloc), _begin(NULL), _end(NULL), _size(0)
 {
 }
 
 template<class T, class Alloc>
 vector<T, Alloc>::vector(size_type n, const T& value, const Alloc& alloc)
-: _value(new T[n]), _size(n), _capacity(alloc.max_size())
+: _alloc(alloc), _begin(NULL), _end(NULL), _size(n)
 {
-	for (size_t i = 0; i < n; i++)
-		_value[i] = value;
+	_begin = _alloc.allocate(n);
+	_end = _begin;
+	for (; n--; _end++)
+		_alloc.construct(_end, value);
 }
 
 template<class T, class Alloc>
@@ -119,17 +122,18 @@ vector<T, Alloc>::vector(const vector<T, Alloc> &copy)
 template<class T, class Alloc>
 vector<T, Alloc>::~vector()
 {
-	delete [] (_value);
+	_alloc.deallocate(_begin, _size);
 }
 
 template<class T, class Alloc>
 vector<T, Alloc> &vector<T, Alloc>::operator=(const vector<T, Alloc> &copy)
 {
-	_value = new T[copy._size];
-	for (size_t i = 0; i < copy._size; i++)
-		_value[i] = copy._value[i];
+	_alloc = copy._alloc;
+	_begin = _alloc.allocate(copy._size);
+	_end = _begin;
+	for (size_t n = 0; n < copy._size; _end++)
+		_alloc.construct(_end, *(copy._begin + n));
 	_size = copy._size;
-	_capacity = copy._capacity;
 	return (*this);
 }
 
@@ -146,7 +150,7 @@ void vector<T, Alloc>::resize(size_type sz, T c)
 	(void)c;
 }
 
-/* Element access *************************************************** */
+/* Element access *********************************************************** */
 
 
 
@@ -160,91 +164,60 @@ void push_back(const T& x)
 
 /* Non-member function overloads ******************************************** */
 
-// template <class T, class Alloc>
-// bool operator==(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Alloc>
+bool operator==(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
+{
+	if (x == y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Alloc>
-// bool operator< (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Alloc>
+bool operator< (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
+{
+	if (x < y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Alloc>
-// bool operator!=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Alloc>
+bool operator!=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
+{
+	if (x != y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Alloc>
-// bool operator> (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Alloc>
+bool operator> (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
+{
+	if (x > y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Alloc>
-// bool operator>=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Alloc>
+bool operator>=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
+{
+	if (x >= y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Alloc>
-// bool operator<=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Alloc>
+bool operator<=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
+{
+	if (x <= y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Alloc>
-// void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
-// {
-// }
+template <class T, class Alloc>
+void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
+{
+	(void)x;
+	(void)y;
+}
 }
 
 #endif
-
-/* To do: */
-
-/* Member functions: */
-// (constructor) 3 / 4
-
-/* Iterators: */
-// begin
-// end
-// rbegin
-// rend
-
-/* Capacity: */
-// resize
-// capacity
-// empty
-// reserve
-
-/* Element access: */
-// front
-// back
-
-/* Modifiers: */
-// assign
-// push_back
-// pop_back
-// insert
-// erase
-// swap
-// clear
-
-/* Allocator: */
-// get_allocator
-
-/* Non-member function overloads: */
-// relational operators
-// swap
-
-// std::iterator_traits
-// std::reverse_iterator
-// std::enable_if
-// std::is_integral
-// std::equal and/or std::lexicographical_compare
-// std::pair
-// std::make_pair

@@ -43,41 +43,53 @@ stack<T, Container>::stack(const Container&)
 {
 }
 
-// template <class T, class Container>
-// bool operator==(const stack<T, Container>& x, const stack<T, Container>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Container>
+bool operator==(const stack<T, Container>& x, const stack<T, Container>& y)
+{
+	if (x == y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Container>
-// bool operator< (const stack<T, Container>& x, const stack<T, Container>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Container>
+bool operator< (const stack<T, Container>& x, const stack<T, Container>& y)
+{
+	if (x < y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Container>
-// bool operator!=(const stack<T, Container>& x, const stack<T, Container>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Container>
+bool operator!=(const stack<T, Container>& x, const stack<T, Container>& y)
+{
+	if (x != y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Container>
-// bool operator> (const stack<T, Container>& x, const stack<T, Container>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Container>
+bool operator> (const stack<T, Container>& x, const stack<T, Container>& y)
+{
+	if (x > y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Container>
-// bool operator>=(const stack<T, Container>& x, const stack<T, Container>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Container>
+bool operator>=(const stack<T, Container>& x, const stack<T, Container>& y)
+{
+	if (x >= y)
+		return (true);
+	return (false);
+}
 
-// template <class T, class Container>
-// bool operator<=(const stack<T, Container>& x, const stack<T, Container>& y)
-// {
-// 	return (false);
-// }
+template <class T, class Container>
+bool operator<=(const stack<T, Container>& x, const stack<T, Container>& y)
+{
+	if (x <= y)
+		return (true);
+	return (false);
+}
 }
 
 #endif
