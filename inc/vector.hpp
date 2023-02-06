@@ -56,12 +56,12 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		/* Iterators ******************************************************** */
 		iterator begin(){return(_begin);}
 		const_iterator begin() const{return(_begin);}
-		iterator end();
-		const_iterator end() const;
-		reverse_iterator rbegin();
-		const_reverse_iterator rbegin() const;
-		reverse_iterator rend();
-		const_reverse_iterator rend() const;
+		iterator end(){return(*(_end - 1));}
+		const_iterator end() const{return(*(_end - 1));}
+		reverse_iterator rbegin(){return(*(_end - 1));}
+		const_reverse_iterator rbegin() const{return(*(_end - 1));}
+		reverse_iterator rend(){return(_begin);}
+		const_reverse_iterator rend() const{return(_begin);}
 
 		/* Capacity ********************************************************* */
 		size_type size() const{return(_size);}
@@ -76,10 +76,10 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		const_reference operator[](size_type n) const{return (_begin[n]);}
 		const_reference at(size_type n) const;
 		reference at(size_type n){return (_begin[n]);}
-		reference front();
-		const_reference front() const;
-		reference back();
-		const_reference back() const;
+		reference front(){return(*_begin);}
+		const_reference front() const{return(*_begin);}
+		reference back(){return(*(_end - 1));}
+		const_reference back() const{return(*(_end - 1));}
 
 		/* Modifiers ******************************************************** */
 		void push_back(const T& x);
@@ -131,8 +131,11 @@ vector<T, Alloc> &vector<T, Alloc>::operator=(const vector<T, Alloc> &copy)
 	_alloc = copy._alloc;
 	_begin = _alloc.allocate(copy._size);
 	_end = _begin;
-	for (size_t n = 0; n < copy._size; _end++)
+	for (size_type n = 0; n < copy._size; n++)
+	{
 		_alloc.construct(_end, *(copy._begin + n));
+		_end++;
+	}
 	_size = copy._size;
 	return (*this);
 }
@@ -157,9 +160,20 @@ void vector<T, Alloc>::resize(size_type sz, T c)
 /* Modifiers **************************************************************** */
 
 template<class T, class Alloc>
-void push_back(const T& x)
+void vector<T, Alloc>::push_back(const T& x)
 {
-	(void)x;
+	iterator	new_begin = _alloc.allocate(_size + 1);
+	_end = new_begin;
+	for (size_type n = 0; n < _size; n++)
+	{
+		_alloc.construct(_end, *(_begin + n));
+		_end++;
+	}
+	_alloc.construct(_end, x);
+	_end++;
+	_alloc.deallocate(_begin, _size);
+	_begin = new_begin;
+	_size++;
 }
 
 /* Non-member function overloads ******************************************** */
