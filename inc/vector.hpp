@@ -56,12 +56,12 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		/* Iterators ******************************************************** */
 		iterator begin(){return(_begin);}
 		const_iterator begin() const{return(_begin);}
-		iterator end(){return(*(_end - 1));}
-		const_iterator end() const{return(*(_end - 1));}
-		reverse_iterator rbegin(){return(*(_end - 1));}
-		const_reverse_iterator rbegin() const{return(*(_end - 1));}
-		reverse_iterator rend(){return(_begin);}
-		const_reverse_iterator rend() const{return(_begin);}
+		iterator end(){return(_end);}
+		const_iterator end() const{return(_end);}
+		reverse_iterator rbegin();
+		const_reverse_iterator rbegin() const;
+		reverse_iterator rend();
+		const_reverse_iterator rend() const;
 
 		/* Capacity ********************************************************* */
 		size_type size() const{return(_size);}
@@ -78,8 +78,8 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		reference at(size_type n){return (_begin[n]);}
 		reference front(){return(*_begin);}
 		const_reference front() const{return(*_begin);}
-		reference back(){return(*(_end - 1));}
-		const_reference back() const{return(*(_end - 1));}
+		reference back(){return(*_end);}
+		const_reference back() const{return(*_end);}
 
 		/* Modifiers ******************************************************** */
 		void push_back(const T& x);
@@ -140,9 +140,44 @@ vector<T, Alloc> &vector<T, Alloc>::operator=(const vector<T, Alloc> &copy)
 	return (*this);
 }
 
+template<class T, class Alloc>
+void vector<T, Alloc>::assign(size_type n, const T& u)
+{
+	_alloc.deallocate(_begin, _size);
+	_size = n;
+	_begin = _alloc.allocate(n);
+	_end = _begin;
+	for (; n--; _end++)
+		_alloc.construct(_end, u);
+}
+
 /* Iterators **************************************************************** */
 
+template<class T, class Alloc>
+typename vector<T, Alloc>::reverse_iterator vector<T, Alloc>::rbegin()
+{
+	return(static_cast<reverse_iterator>(_end));
+}
 
+template<class T, class Alloc>
+typename vector<T, Alloc>::const_reverse_iterator
+vector<T, Alloc>::rbegin() const
+{
+	return(static_cast<const_reverse_iterator>(_end));
+}
+
+template<class T, class Alloc>
+typename vector<T, Alloc>::reverse_iterator vector<T, Alloc>::rend()
+{
+	return(static_cast<reverse_iterator>(_begin));
+}
+
+template<class T, class Alloc>
+typename vector<T, Alloc>::const_reverse_iterator
+vector<T, Alloc>::rend() const
+{
+	return(static_cast<const_reverse_iterator>(_begin));
+}
 
 /* Capacity ***************************************************************** */
 
