@@ -29,7 +29,7 @@ template<class T, class Container = std::vector<T> > class stack
 	protected:
 		Container	c;
 	public:
-		explicit stack(const Container& = Container());
+		explicit stack(const Container& container = Container());
 		bool empty() const{return c.empty();}
 		size_type size() const{return c.size();}
 		value_type& top(){return c.back(); }
@@ -39,7 +39,7 @@ template<class T, class Container = std::vector<T> > class stack
 };
 
 template <class T, class Container>
-stack<T, Container>::stack(const Container&)
+stack<T, Container>::stack(const Container& container) : c(container)
 {
 }
 

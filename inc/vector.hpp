@@ -176,6 +176,21 @@ void vector<T, Alloc>::push_back(const T& x)
 	_size++;
 }
 
+template<class T, class Alloc>
+void vector<T, Alloc>::pop_back()
+{
+	iterator	new_begin = _alloc.allocate(_size - 1);
+	_end = new_begin;
+	for (size_type n = 0; n < _size - 1; n++)
+	{
+		_alloc.construct(_end, *(_begin + n));
+		_end++;
+	}
+	_alloc.deallocate(_begin, _size);
+	_begin = new_begin;
+	_size--;
+}
+
 /* Non-member function overloads ******************************************** */
 
 template <class T, class Alloc>
@@ -235,3 +250,11 @@ void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
 }
 
 #endif
+
+// • std::iterator_traits
+// • std::reverse_iterator
+// • std::enable_if
+// • std::is_integral
+// • std::equal and/or std::lexicographical_compare
+// • std::pair
+// • std::make_pair

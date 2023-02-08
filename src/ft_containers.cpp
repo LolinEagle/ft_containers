@@ -15,40 +15,51 @@
 #include <stack>
 #include <vector>
 
-#define PRINT_ALL 0
+#define DEBUG	false
+#define CHECK	"\U00002705 "
+#define LINE	"______________________________________________________________"
 
 void	ft_stack(void)
 {
 	ft ::stack<int>	fa;
 	std::stack<int>	sa;
 
-	std::cout << "___Stack_____________________________________________________"
-	<< "\nDefault :" << std::endl;
+	std::cout << "___Stack_" << LINE << "\nDefault :" << std::endl;
 
-	if (PRINT_ALL || fa.size() != sa.size() || fa.empty() != sa.empty())
+	// Size
+	if (DEBUG || fa.size() != sa.size())
 	{
-		std::cout
-		<< "size=" << fa.size() << "\tempty=" << fa.empty() << '\n'
-		<< "size=" << sa.size() << "\tempty=" << sa.empty() << '\n'
-		<< std::endl;
+		std::cout <<
+		"size=" << fa.size() << '\n' <<
+		"size=" << sa.size() << std::endl;
 	}
 	else
-		std::cout << "Good !" << std::endl;
+		std::cout << CHECK << "size" << std::endl;
 
-	fa.push(7);
-	sa.push(7);
-
-	if (PRINT_ALL || fa.size() != sa.size() || fa.empty() != sa.empty())
+	// Push & Top
+	fa.push(1);
+	sa.push(1);
+	if (DEBUG || fa.top() != sa.top())
 	{
-		std::cout
-		<< "size=" << fa.size() << "\tempty=" << fa.empty() << "" << "\ttop="
-		<< fa.top() << '\n'
-		<< "size=" << sa.size() << "\tempty=" << sa.empty() << "" << "\ttop="
-		<< sa.top() << '\n'
-		<< std::endl;
+		std::cout <<
+		"top=" << fa.top() << '\n' <<
+		"top=" << sa.top() << std::endl;
 	}
 	else
-		std::cout << "Good !" << std::endl;
+		std::cout << CHECK << "push & top" << std::endl;
+
+	// Pop & Empty
+	fa.pop();
+	sa.pop();
+	if (DEBUG || fa.empty() != sa.empty())
+	{
+		std::cout <<
+		"empty=" << fa.empty() << '\n' <<
+		"empty=" << sa.empty() << '\n' <<
+		std::endl;
+	}
+	else
+		std::cout << CHECK << "pop & empty" << std::endl;
 }
 
 void	ft_vector(void)
@@ -56,55 +67,121 @@ void	ft_vector(void)
 	ft ::vector<int>	fa;
 	std::vector<int>	va;
 
-	std::cout << "___Vector____________________________________________________"
-	<< "\nDefault :" << std::endl;
+	std::cout << "___Vector" << LINE << "\nDefault :" << std::endl;
 
-	if (PRINT_ALL || fa.size() != va.size() || fa.max_size() != va.max_size())
+	// Size
+	if (DEBUG || fa.size() != va.size())
 	{
-		std::cout
-		<< "size=" << fa.size() << "\tmax_size=" << fa.max_size() << '\n'
-		<< "size=" << va.size() << "\tmax_size=" << va.max_size() << '\n'
-		<< std::endl;
+		std::cout <<
+		"size=" << fa.size() << '\n' <<
+		"size=" << va.size() << '\n' <<
+		std::endl;
 	}
 	else
-		std::cout << "Good !" << std::endl;
+		std::cout << CHECK << "size" << std::endl;
 
-	for (int i = 1; i < 9; i++)
+	// Max size
+	if (DEBUG || fa.max_size() != va.max_size())
 	{
-		fa.push_back(i);
-		va.push_back(i);
+		std::cout <<
+		"max_size=" << fa.max_size() << '\n' <<
+		"max_size=" << va.max_size() << '\n' <<
+		std::endl;
 	}
+	else
+		std::cout << CHECK << "max_size" << std::endl;
 
-		std::cout
-		<< "size=" << fa.size()
-		<< "\t[0]=" << fa[0] << "\t[7]=" << fa.at(7) << '\n'
-		<< "size=" << va.size()
-		<< "\t[0]=" << va[0] << "\t[7]=" << va.at(7) << '\n'
-		<< "front=" << fa.front() << "\tback=" << fa.back() << '\n'
-		<< "front=" << va.front() << "\tback=" << fa.back() << '\n'
-		<< std::endl;
+	// Push back
+	fa.push_back(1);
+	va.push_back(1);
+	if (DEBUG || fa.size() != va.size())
+	{
+		std::cout <<
+		"size=" << fa.size() << '\n' <<
+		"size=" << va.size() << '\n' <<
+		std::endl;
+	}
+	else
+		std::cout << CHECK << "push_back & size" << std::endl;
 
-	ft ::vector<int>	fb(6, 6);
-	std::vector<int>	vb(6, 6);
+	// Pop back
+	fa.pop_back();
+	va.pop_back();
+	if (DEBUG || fa.size() != va.size())
+	{
+		std::cout <<
+		"size=" << fa.size() << '\n' <<
+		"size=" << va.size() << '\n' <<
+		std::endl;
+	}
+	else
+		std::cout << CHECK << "pop_back & size" << std::endl;
 
-		std::cout
-		<< "Fill :\n"
-		<< "size=" << fb.size() <<
-		"\t[0]=" << fb[0] << "\t[5]=" << fb.at(5) << '\n'
-		<< "size=" << vb.size() <<
-		"\t[0]=" << vb[0] << "\t[5]=" << vb.at(5) << '\n'
-		<< std::endl;
-	
+	// Insert
+
+
+	// Erase
+
+
+	// Swap
+
+
+	// Clear
+
+
+	// Begin
+
+
+	// End
+
+
+	// Rbegin
+
+
+	// Rend
+
+
+	// Resize
+
+
+	// Capacity
+
+
+	// Empty
+
+
+	// Reserve
+
+
+	// Operator []
+
+
+	// At
+
+
+	// Front
+
+
+	// Back
+
+
+	ft ::vector<int>	fb(8, 8);
+	std::vector<int>	vb(8, 8);
+
+	std::cout << "Fill :" << std::endl;
+
+
+
+	std::cout << "Range :" << std::endl;
+
+
+
 	ft ::vector<int>	fd(fa);
 	std::vector<int>	vd(va);
 
-		std::cout
-		<< "Copy :\n"
-		<< "size=" << fd.size() << "\tmax_size=" << fd.max_size() << '\n'
-		<< "size=" << vd.size() << "\tmax_size=" << vd.max_size() << '\n'
-		<< "[0]=" << fd[0] << "\t[5]=" << fd.at(5) << '\n'
-		<< "[0]=" << vd[0] << "\t[5]=" << vd.at(5) << '\n'
-		<< std::endl;
+	std::cout << "Copy :" << std::endl;
+
+
 }
 
 int		main(void)
