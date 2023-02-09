@@ -13,6 +13,12 @@
 #ifndef HEADER_HPP
 #define HEADER_HPP
 
+/* Include ******************************************************************* */
+#include <stack.hpp>
+#include <vector.hpp>
+#include <stack>
+#include <vector>
+
 /* Colors ******************************************************************* */
 #define RESET	"\033[0m"
 #define BLACK	"\033[30m"

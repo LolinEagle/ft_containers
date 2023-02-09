@@ -37,6 +37,7 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		iterator		_begin;
 		iterator		_end;
 		size_type		_size;
+		size_type		_capacity;
 	public:
 		/* Constructor & Destructor ***************************************** */
 		explicit vector(const Alloc& alloc = Alloc());
@@ -51,7 +52,7 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		template <class InputIterator>
 		void assign(InputIterator first, InputIterator last);
 		void assign(size_type n, const T& u);
-		allocator_type get_allocator() const;
+		allocator_type get_allocator() const{return(_alloc);}
 
 		/* Iterators ******************************************************** */
 		iterator begin(){return(_begin);}
@@ -66,20 +67,20 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		/* Capacity ********************************************************* */
 		size_type size() const{return(_size);}
 		size_type max_size() const{return(_alloc.max_size());}
-		void resize(size_type sz, T c = T());
-		size_type capacity() const;
+		void resize(size_type new_size, T c = T());
+		size_type capacity() const{return(_capacity);}
 		bool empty() const;
 		void reserve(size_type n);
 
 		/* Element access *************************************************** */
 		reference operator[](size_type n){return (_begin[n]);}
 		const_reference operator[](size_type n) const{return (_begin[n]);}
-		const_reference at(size_type n) const;
+		const_reference at(size_type n) const{return (_begin[n]);}
 		reference at(size_type n){return (_begin[n]);}
 		reference front(){return(*_begin);}
 		const_reference front() const{return(*_begin);}
-		reference back(){return(*_end);}
-		const_reference back() const{return(*_end);}
+		reference back(){return(*(_end - 1));}
+		const_reference back() const{return(*(_end)- 1);}
 
 		/* Modifiers ******************************************************** */
 		void push_back(const T& x);
@@ -91,7 +92,7 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		InputIterator first, InputIterator last);
 		iterator erase(iterator position);
 		iterator erase(iterator first, iterator last);
-		void swap(vector<T,Alloc>&);
+		void swap(vector<T,Alloc>& x);
 		void clear();
 };
 
@@ -99,13 +100,13 @@ template<class T, class Alloc = std::allocator<T> > class vector
 
 template<class T, class Alloc>
 vector<T, Alloc>::vector(const Alloc& alloc)
-: _alloc(alloc), _begin(NULL), _end(NULL), _size(0)
+: _alloc(alloc), _begin(NULL), _end(NULL), _size(0), _capacity(0)
 {
 }
 
 template<class T, class Alloc>
 vector<T, Alloc>::vector(size_type n, const T& value, const Alloc& alloc)
-: _alloc(alloc), _begin(NULL), _end(NULL), _size(n)
+: _alloc(alloc), _begin(NULL), _end(NULL), _size(n), _capacity(n)
 {
 	_begin = _alloc.allocate(n);
 	_end = _begin;
@@ -137,6 +138,7 @@ vector<T, Alloc> &vector<T, Alloc>::operator=(const vector<T, Alloc> &copy)
 		_end++;
 	}
 	_size = copy._size;
+	_capacity = copy._capacity;
 	return (*this);
 }
 
@@ -145,6 +147,7 @@ void vector<T, Alloc>::assign(size_type n, const T& u)
 {
 	_alloc.deallocate(_begin, _size);
 	_size = n;
+	_capacity = n;
 	_begin = _alloc.allocate(n);
 	_end = _begin;
 	for (; n--; _end++)
@@ -182,10 +185,49 @@ vector<T, Alloc>::rend() const
 /* Capacity ***************************************************************** */
 
 template<class T, class Alloc>
-void vector<T, Alloc>::resize(size_type sz, T c)
+void vector<T, Alloc>::resize(size_type new_size, T c)
 {
-	(void)sz;
-	(void)c;
+	if (_size == new_size)
+		return ;
+	iterator	new_begin = _alloc.allocate(new_size);
+	iterator	new_end = new_begin;
+	size_type	i;
+
+	for (i = 0; i < new_size && i < _size; i++)
+		_alloc.construct(new_end++, *(_begin + i));
+	for (; i < new_size; i++)
+		_alloc.construct(new_end++, c);
+	_alloc.deallocate(_begin, _size);
+	_begin = new_begin;
+	_end = new_end;
+	_size = new_size;
+	_capacity = new_size;
+
+}
+
+template<class T, class Alloc>
+bool vector<T, Alloc>::empty() const
+{
+	if (_size == 0)
+		return (true);
+	return (false);
+}
+
+template<class T, class Alloc>
+void vector<T, Alloc>::reserve(size_type n)
+{
+	if (_size >= n)
+		return ;
+	iterator	new_begin = _alloc.allocate(n);
+	iterator	new_end = new_begin;
+	size_type	i;
+
+	for (i = 0; i < _size; i++)
+		_alloc.construct(new_end++, *(_begin + i));
+	_alloc.deallocate(_begin, _size);
+	_begin = new_begin;
+	_end = new_end;
+	_capacity = n;
 }
 
 /* Element access *********************************************************** */
@@ -198,6 +240,7 @@ template<class T, class Alloc>
 void vector<T, Alloc>::push_back(const T& x)
 {
 	iterator	new_begin = _alloc.allocate(_size + 1);
+
 	_end = new_begin;
 	for (size_type n = 0; n < _size; n++)
 	{
@@ -209,12 +252,14 @@ void vector<T, Alloc>::push_back(const T& x)
 	_alloc.deallocate(_begin, _size);
 	_begin = new_begin;
 	_size++;
+	_capacity++;
 }
 
 template<class T, class Alloc>
 void vector<T, Alloc>::pop_back()
 {
 	iterator	new_begin = _alloc.allocate(_size - 1);
+
 	_end = new_begin;
 	for (size_type n = 0; n < _size - 1; n++)
 	{
@@ -224,6 +269,106 @@ void vector<T, Alloc>::pop_back()
 	_alloc.deallocate(_begin, _size);
 	_begin = new_begin;
 	_size--;
+	_capacity--;
+}
+
+template<class T, class Alloc>
+typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(iterator position,
+const T& x)
+{
+	iterator	new_begin = _alloc.allocate(_size + 1);
+	iterator	new_end = new_begin;
+	iterator	ret;
+
+	for (iterator it = _begin; it != position; it++)
+		_alloc.construct(new_end++, *it);
+	ret = new_end;
+	_alloc.construct(new_end, x);
+	new_end++;
+	for (; position != _end; position++)
+		_alloc.construct(new_end++, *position);
+	_alloc.deallocate(_begin, _size);
+	_begin = new_begin;
+	_end = new_end;
+	_size++;
+	_capacity++;
+	return (ret);
+}
+
+template<class T, class Alloc>
+void vector<T, Alloc>::insert(iterator position, size_type n, const T& x)
+{
+	iterator	new_begin = _alloc.allocate(_size + n);
+	iterator	new_end = new_begin;
+
+	for (iterator it = _begin; it != position; it++)
+		_alloc.construct(new_end++, *it);
+	for (size_type i = 0; i < n; i++)
+		_alloc.construct(new_end++, x);
+	for (; position != _end; position++)
+		_alloc.construct(new_end++, *position);
+	_alloc.deallocate(_begin, _size);
+	_begin = new_begin;
+	_end = new_end;
+	_size += n;
+	_capacity += n;
+}
+
+template<class T, class Alloc>
+typename vector<T, Alloc>::iterator vector<T, Alloc>::erase(iterator position)
+{
+	iterator	new_begin = _alloc.allocate(_size - 1);
+	iterator	new_end = new_begin;
+	iterator	ret;
+
+	for (iterator it = _begin; it != position; it++)
+		_alloc.construct(new_end++, *it);
+	ret = new_end;
+	position++;
+	for (; position != _end; position++)
+		_alloc.construct(new_end++, *position);
+	_alloc.deallocate(_begin, _size);
+	_begin = new_begin;
+	_end = new_end;
+	_size--;
+	_capacity--;
+	return (ret);
+}
+
+template<class T, class Alloc>
+typename vector<T, Alloc>::iterator vector<T, Alloc>::erase(iterator first,
+iterator last)
+{
+	iterator	new_begin = _alloc.allocate(_size - (last - first));
+	iterator	new_end = new_begin;
+	iterator	ret;
+	iterator	position;
+
+	for (iterator it = _begin; it != first; it++)
+		_alloc.construct(new_end++, *it);
+	ret = new_end;
+	position = first + 1;
+	for (; position != last; position++)
+		_alloc.construct(new_end++, *position);
+	_alloc.deallocate(_begin, _size);
+	_begin = new_begin;
+	_end = new_end;
+	_size -= last - first;
+	_capacity -= last - first;
+	return (ret);
+}
+
+template<class T, class Alloc>
+void vector<T, Alloc>::swap(vector<T,Alloc>& x)
+{
+	(void)x;
+}
+
+template<class T, class Alloc>
+void vector<T, Alloc>::clear()
+{
+	while (_size != 0)
+		pop_back();
 }
 
 /* Non-member function overloads ******************************************** */
@@ -285,11 +430,3 @@ void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
 }
 
 #endif
-
-// • std::iterator_traits
-// • std::reverse_iterator
-// • std::enable_if
-// • std::is_integral
-// • std::equal and/or std::lexicographical_compare
-// • std::pair
-// • std::make_pair
