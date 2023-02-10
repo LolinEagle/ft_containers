@@ -15,7 +15,7 @@ SRC			=	ft_containers.cpp
 CPP			=	c++
 CPPFLAGS	=	-Wall -Wextra -Werror -std=c++98 -MMD
 RM			=	rm -rf
-INC			=	-I ./inc/
+INC			=	-I ./inc/ -I ./containers/
 SRC_PATH	=	./src/
 OBJ_PATH	=	./obj/
 OBJ_DIRS	=	${OBJ_PATH}

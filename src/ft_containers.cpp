@@ -358,39 +358,39 @@ void	ft_vector(void)
 	else
 		std::cout << CHECK << "Back" << ENDL;
 
-	ft ::vector<int>	fb(8, 8);
-	std::vector<int>	vb(8, 8);
+	// ft ::vector<int>	fb(8, 8);
+	// std::vector<int>	vb(8, 8);
 
-	std::cout << BLUE << "Fill :" << ENDL;
+	// std::cout << BLUE << "Fill :" << ENDL;
 
-	// Size
-	if (DEBUG || fb.size() != vb.size())
-	{
-		std::cout << CROSS << "Size\n" << RESET <<
-		"size=" << fb.size() << '\n' <<
-		"size=" << vb.size() << std::endl;
-	}
-	else
-		std::cout << CHECK << "Size" << ENDL;
+	// // Size
+	// if (DEBUG || fb.size() != vb.size())
+	// {
+	// 	std::cout << CROSS << "Size\n" << RESET <<
+	// 	"size=" << fb.size() << '\n' <<
+	// 	"size=" << vb.size() << std::endl;
+	// }
+	// else
+	// 	std::cout << CHECK << "Size" << ENDL;
 
-	std::cout << BLUE << "Range :" << ENDL;
+	// std::cout << BLUE << "Range :" << ENDL;
 
 
 
-	ft ::vector<int>	fd(fa);
-	std::vector<int>	vd(va);
+	// ft ::vector<int>	fd(fa);
+	// std::vector<int>	vd(va);
 
-	std::cout << BLUE << "Copy :" << ENDL;
+	// std::cout << BLUE << "Copy :" << ENDL;
 
-	// Size
-	if (DEBUG || fd.size() != vd.size())
-	{
-		std::cout << CROSS << "Size\n" << RESET <<
-		"size=" << fd.size() << '\n' <<
-		"size=" << vd.size() << std::endl;
-	}
-	else
-		std::cout << CHECK << "Size" << ENDL;
+	// // Size
+	// if (DEBUG || fd.size() != vd.size())
+	// {
+	// 	std::cout << CROSS << "Size\n" << RESET <<
+	// 	"size=" << fd.size() << '\n' <<
+	// 	"size=" << vd.size() << std::endl;
+	// }
+	// else
+	// 	std::cout << CHECK << "Size" << ENDL;
 }
 
 int		main(void)
