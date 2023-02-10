@@ -32,12 +32,6 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		typedef typename Alloc::const_pointer			const_pointer;
 		typedef std::reverse_iterator<iterator>			reverse_iterator;
 		typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
-		// • std::iterator_traits
-		// • std::enable_if
-		// • std::is_integral
-		// • std::equal and/or std::lexicographical_compare
-		// • std::pair
-		// • std::make_pair
 	private:
 		allocator_type	_alloc;
 		iterator		_begin;
@@ -52,16 +46,12 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		vector(InputIterator first, InputIterator last,
 		const Alloc& alloc = Alloc())
 		{
-			// : _alloc(alloc), _begin(NULL), _size(n), _capacity(n)
-			// {
-			// 	_begin = _alloc.allocate(n);
-			// 	for (size_type i = 0; i < _size; i++)
-			// 		_alloc.construct(_begin + i, value);
-			// }
-
-			(void)first;
-			(void)last;
-			(void)alloc;
+			_alloc = alloc;
+			_size = last - first;
+			_capacity = _size;
+			_begin = _alloc.allocate(_size);
+			for (size_type i = 0; i < _size; i++)
+				_alloc.construct(_begin + i, first + i);
 		}
 		vector(const vector<T,Alloc>& x);
 		~vector();
@@ -69,15 +59,14 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		template <class InputIterator>
 		void assign(InputIterator first, InputIterator last)
 		{
-			// _alloc.deallocate(_begin, _size);
-			// _begin = _alloc.allocate(n);
-			// for (size_type i = 0; i < n; i++)
-			// 	_alloc.construct(_begin + i, u);
-			// _size = n;
-			// _capacity = n;
-
-			(void)first;
-			(void)last;
+			size_type	new_size = last - first;
+			iterator	new_begin = _alloc.allocate(_size);
+			
+			for (size_type i = 0; i < new_size; i++)
+				_alloc.construct(new_begin + i, first + i);
+			_begin = new_begin;
+			_size = new_size;
+			_capacity = new_size;
 		}
 		void assign(size_type n, const T& u);
 		allocator_type get_allocator() const{return(_alloc);}
@@ -118,26 +107,20 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		template <class InputIterator>
 		void insert(iterator position, InputIterator first, InputIterator last)
 		{
-			// iterator	new_begin = _alloc.allocate(_size + 1);
-			// iterator	tmp = new_begin;
-			// iterator	ret;
+			size_type	new_size = last - first;
+			iterator	new_begin = _alloc.allocate(_size + new_size);
+			iterator	tmp = new_begin;
 
-			// for (iterator it = _begin; it != position; it++)
-			// 	_alloc.construct(tmp++, *it);
-			// ret = tmp;
-			// _alloc.construct(tmp, x);
-			// tmp++;
-			// for (; position != _begin + _size; position++)
-			// 	_alloc.construct(tmp++, *position);
-			// _alloc.deallocate(_begin, _size);
-			// _begin = new_begin;
-			// _size++;
-			// _capacity++;
-			// return (ret);
-
-			(void)position;
-			(void)first;
-			(void)last;
+			for (iterator it = _begin; it != position; it++)
+				_alloc.construct(tmp++, *it);
+			for (size_type i = 0; i < new_size; i++)
+				_alloc.construct(tmp++, *(first + i));
+			for (; position != _begin + _size; position++)
+				_alloc.construct(tmp++, *position);
+			_alloc.deallocate(_begin, _size);
+			_begin = new_begin;
+			_size += new_size;
+			_capacity = _size;
 		}
 		iterator erase(iterator position);
 		iterator erase(iterator first, iterator last);
@@ -230,8 +213,6 @@ vector<T, Alloc>::rend() const
 template<class T, class Alloc>
 void vector<T, Alloc>::resize(size_type new_size, T c)
 {
-	if (_size == new_size)
-		return ;
 	iterator	new_begin = _alloc.allocate(new_size);
 	size_type	i;
 
@@ -364,21 +345,20 @@ template<class T, class Alloc>
 typename vector<T, Alloc>::iterator vector<T, Alloc>::erase(iterator first,
 iterator last)
 {
-	iterator	new_begin = _alloc.allocate(_size - (last - first));
+	size_type	new_size = last - first;
+	iterator	new_begin = _alloc.allocate(_size - new_size);
 	iterator	tmp = new_begin;
 	iterator	ret;
-	iterator	position;
 
 	for (iterator it = _begin; it != first; it++)
 		_alloc.construct(tmp++, *it);
 	ret = tmp;
-	position = first + 1;
-	for (; position != last; position++)
-		_alloc.construct(tmp++, *position);
+	for (iterator it = last; it != _begin + _size; it++)
+		_alloc.construct(tmp++, *it);
 	_alloc.deallocate(_begin, _size);
 	_begin = new_begin;
-	_size -= last - first;
-	_capacity -= last - first;
+	_size -= new_size;
+	_capacity = _size;
 	return (ret);
 }
 

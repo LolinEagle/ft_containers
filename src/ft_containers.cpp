@@ -70,6 +70,27 @@ void	print_std_vector(std::vector<int> f)
 	std::cout << "end]" << std::endl;
 }
 
+bool	ft_vector_test(ft::vector<int> fa, std::vector<int> va)
+{
+	bool	ret = false;
+
+	if (DEBUG || fa.size() != va.size())
+	{
+		std::cout << CROSS << "Size\n" << RESET <<
+		"ft  size=" << fa.size() << '\n' <<
+		"std size=" << va.size() << std::endl;
+		ret = true;
+	}
+	if (DEBUG || fa.capacity() != va.capacity())
+	{
+		std::cout << CROSS << "Capacity\n" << RESET <<
+		"ft  capacity=" << fa.capacity() << '\n' <<
+		"std capacity=" << va.capacity() << std::endl;
+		ret = true;
+	}
+	return (ret);
+}
+
 void	ft_vector(void)
 {
 	ft ::vector<int>	fa;
@@ -77,18 +98,8 @@ void	ft_vector(void)
 
 	std::cout << BLUE << "___Vector" << LINE << "\nDefault :" << ENDL;
 
-	// Size
-	if (DEBUG || fa.size() != va.size())
-	{
-		std::cout << CROSS << "Size\n" << RESET <<
-		"size=" << fa.size() << '\n' <<
-		"size=" << va.size() << std::endl;
-	}
-	else
-		std::cout << CHECK << "Size" << ENDL;
-
 	// Max size
-	if (DEBUG || fa.max_size() != va.max_size())
+	if (DEBUG || fa.max_size() != va.max_size() || ft_vector_test(fa, va))
 	{
 		std::cout << CROSS << "Max size\n" << RESET <<
 		"max_size=" << fa.max_size() << '\n' <<
@@ -98,7 +109,7 @@ void	ft_vector(void)
 		std::cout << CHECK << "Max size" << ENDL;
 
 	// Empty
-	if (DEBUG || fa.empty() != va.empty())
+	if (DEBUG || fa.empty() != va.empty() || ft_vector_test(fa, va))
 	{
 		std::cout << CROSS << "Empty\n" << RESET <<
 		"empty=" << fa.empty() << '\n' <<
@@ -110,7 +121,7 @@ void	ft_vector(void)
 	// Push back
 	fa.push_back(1);
 	va.push_back(1);
-	if (DEBUG || fa.size() != va.size())
+	if (DEBUG || fa.size() != va.size() || ft_vector_test(fa, va))
 	{
 		std::cout << CROSS << "Push back & Size\n" << RESET <<
 		"size=" << fa.size() << '\n' <<
@@ -122,7 +133,7 @@ void	ft_vector(void)
 	// Pop back
 	fa.pop_back();
 	va.pop_back();
-	if (DEBUG || fa.size() != va.size())
+	if (DEBUG || fa.size() != va.size() || ft_vector_test(fa, va))
 	{
 		std::cout << CROSS << "Pop back & Size\n" << RESET <<
 		"size=" << fa.size() << '\n' <<
@@ -141,7 +152,7 @@ void	ft_vector(void)
 	// Insert single element
 	ft ::vector<int>::iterator itf = fa.insert(fa.begin() + 1, 2);
 	std::vector<int>::iterator itv = va.insert(va.begin() + 1, 2);
-	if (DEBUG || *itf != *itv)
+	if (DEBUG || *itf != *itv || ft_vector_test(fa, va))
 	{
 		std::cout << CROSS << "Insert single element\n" << RESET <<
 		"*itf=" << *itf << '\n' <<
@@ -167,7 +178,18 @@ void	ft_vector(void)
 		std::cout << CHECK << "Insert fill" << ENDL;
 
 	// Insert range
-	
+	fa.insert(fa.begin() + 2, fa.begin(), fa.end());
+	va.insert(va.begin() + 2, va.begin(), va.end());
+	if (DEBUG || *(fa.begin() + 3) != *(va.begin() + 3))
+	{
+		std::cout << CROSS << "Insert range\n" << RESET <<
+		"*(fa.begin() + 3)=" << *(fa.begin() + 3) << '\n' <<
+		"*(va.begin() + 3)=" << *(va.begin() + 3) << std::endl;
+		print_ft_vector(fa);
+		print_std_vector(va);
+	}
+	else
+		std::cout << CHECK << "Insert range" << ENDL;
 
 	// Erase single element
 	ft ::vector<int>::iterator itf2 = fa.erase(fa.begin());
@@ -358,39 +380,39 @@ void	ft_vector(void)
 	else
 		std::cout << CHECK << "Back" << ENDL;
 
-	// ft ::vector<int>	fb(8, 8);
-	// std::vector<int>	vb(8, 8);
+	ft ::vector<int>	fb(8, 8);
+	std::vector<int>	vb(8, 8);
 
-	// std::cout << BLUE << "Fill :" << ENDL;
+	std::cout << BLUE << "Fill :" << ENDL;
 
-	// // Size
-	// if (DEBUG || fb.size() != vb.size())
-	// {
-	// 	std::cout << CROSS << "Size\n" << RESET <<
-	// 	"size=" << fb.size() << '\n' <<
-	// 	"size=" << vb.size() << std::endl;
-	// }
-	// else
-	// 	std::cout << CHECK << "Size" << ENDL;
+	// Size
+	if (DEBUG || fb.size() != vb.size())
+	{
+		std::cout << CROSS << "Size\n" << RESET <<
+		"size=" << fb.size() << '\n' <<
+		"size=" << vb.size() << std::endl;
+	}
+	else
+		std::cout << CHECK << "Size" << ENDL;
 
-	// std::cout << BLUE << "Range :" << ENDL;
+	std::cout << BLUE << "Range :" << ENDL;
 
 
 
-	// ft ::vector<int>	fd(fa);
-	// std::vector<int>	vd(va);
+	ft ::vector<int>	fd(fa);
+	std::vector<int>	vd(va);
 
-	// std::cout << BLUE << "Copy :" << ENDL;
+	std::cout << BLUE << "Copy :" << ENDL;
 
-	// // Size
-	// if (DEBUG || fd.size() != vd.size())
-	// {
-	// 	std::cout << CROSS << "Size\n" << RESET <<
-	// 	"size=" << fd.size() << '\n' <<
-	// 	"size=" << vd.size() << std::endl;
-	// }
-	// else
-	// 	std::cout << CHECK << "Size" << ENDL;
+	// Size
+	if (DEBUG || fd.size() != vd.size())
+	{
+		std::cout << CROSS << "Size\n" << RESET <<
+		"size=" << fd.size() << '\n' <<
+		"size=" << vd.size() << std::endl;
+	}
+	else
+		std::cout << CHECK << "Size" << ENDL;
 }
 
 int		main(void)
