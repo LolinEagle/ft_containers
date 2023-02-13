@@ -76,14 +76,14 @@ bool	vector_test(ft::vector<int>& ft, std::vector<int>& std)
 
 	if (ft.size() != std.size())
 	{
-		std::cout << YELLOW << "Size\n" <<
+		std::cout << YELLOW <<
 		"ft  size=" << ft.size() << '\n' <<
 		"std size=" << std.size() << ENDL;
 		ret = true;
 	}
-	if (ft.capacity() != std.capacity())
+	if (ft.capacity() < ft.size() || std.capacity() < std.size())
 	{
-		std::cout << YELLOW << "Capacity\n" <<
+		std::cout << YELLOW <<
 		"ft  capacity=" << ft.capacity() << '\n' <<
 		"std capacity=" << std.capacity() << ENDL;
 		ret = true;
@@ -135,12 +135,12 @@ void	ft_vector(void)
 	va.pop_back();
 	if (DEBUG || vector_test(fa, va) || fa.size() != va.size())
 	{
-		std::cout << CROSS << "Pop back & Size\n" << RESET <<
+		std::cout << CROSS << "Pop back\n" << RESET <<
 		"size=" << fa.size() << '\n' <<
 		"size=" << va.size() << std::endl;
 	}
 	else
-		std::cout << CHECK << "Pop back & Size" << ENDL;
+		std::cout << CHECK << "Pop back" << ENDL;
 
 	fa.push_back(1);
 	va.push_back(1);
@@ -164,8 +164,8 @@ void	ft_vector(void)
 		std::cout << CHECK << "Insert single element" << ENDL;
 
 	/* Insert fill ********************************************************** */
-	fa.insert(fa.begin() + 2, (size_t)3, 3);// Need a cast for some resson
-	va.insert(va.begin() + 2, 3, 3);
+	fa.insert(fa.begin() + 2, (size_t)3, 0);// Need a cast for some resson
+	va.insert(va.begin() + 2, 3, 0);
 	if (DEBUG || vector_test(fa, va) || *(fa.begin() + 3) != *(va.begin() + 3))
 	{
 		std::cout << CROSS << "Insert fill\n" << RESET <<

@@ -285,40 +285,103 @@ template<class T, class Alloc>
 typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(iterator position,
 const T& x)
 {
-	iterator	new_begin = _alloc.allocate(_size + 1);
-	iterator	tmp = new_begin;
 	iterator	ret;
 
-	for (iterator it = _begin; it != position; it++)
-		_alloc.construct(tmp++, *it);
-	ret = tmp;
-	_alloc.construct(tmp, x);
-	tmp++;
-	for (; position != _begin + _size; position++)
-		_alloc.construct(tmp++, *position);
-	_alloc.deallocate(_begin, _size);
-	_begin = new_begin;
+	if (_size >= _capacity)
+	{
+		iterator	new_begin = _alloc.allocate(_size + 1);
+		iterator	tmp = new_begin;
+
+		for (iterator it = _begin; it != position; it++)
+			_alloc.construct(tmp++, *it);
+		ret = tmp;
+		_alloc.construct(tmp, x);
+		tmp++;
+		for (; position != _begin + _size; position++)
+			_alloc.construct(tmp++, *position);
+		_alloc.deallocate(_begin, _size);
+		_begin = new_begin;
+		_capacity++;
+	}
+	else
+	{
+		value_type	i[2];
+		iterator	tmp = _begin;
+
+		while (tmp != position)
+			tmp++;
+		ret = tmp;
+		i[0] = *tmp;
+		_alloc.destroy(tmp);
+		_alloc.construct(tmp, x);
+		tmp++;
+		while (tmp != _begin + _size)
+		{
+			i[1] = *tmp;
+			_alloc.destroy(tmp);
+			_alloc.construct(tmp, i[0]);
+			tmp++;
+			i[0] = i[1];
+		}
+		_alloc.construct(tmp, i[0]);
+	}
 	_size++;
-	_capacity++;
 	return (ret);
 }
 
 template<class T, class Alloc>
 void vector<T, Alloc>::insert(iterator position, size_type n, const T& x)
 {
-	iterator	new_begin = _alloc.allocate(_size + n);
-	iterator	tmp = new_begin;
+	if (n <= 0)
+		return ;
+	if (_size + n > _capacity)
+	{
+		iterator	new_begin = _alloc.allocate(_size + n);
+		iterator	tmp = new_begin;
 
-	for (iterator it = _begin; it != position; it++)
-		_alloc.construct(tmp++, *it);
-	for (size_type i = 0; i < n; i++)
-		_alloc.construct(tmp++, x);
-	for (; position != _begin + _size; position++)
-		_alloc.construct(tmp++, *position);
-	_alloc.deallocate(_begin, _size);
-	_begin = new_begin;
-	_size += n;
-	_capacity += n;
+		for (iterator it = _begin; it != position; it++)
+			_alloc.construct(tmp++, *it);
+		for (size_type i = 0; i < n; i++)
+			_alloc.construct(tmp++, x);
+		for (; position != _begin + _size; position++)
+			_alloc.construct(tmp++, *position);
+		_alloc.deallocate(_begin, _size);
+		_begin = new_begin;
+		_size += n;
+		_capacity = _size;
+	}
+	else
+	{
+		value_type	i[2];
+		iterator	tmp = _begin;
+		iterator	tmptmp;
+
+		while (tmp != position)
+			tmp++;
+		i[0] = *tmp;
+		_alloc.destroy(tmp);
+		_alloc.construct(tmp, x);
+		tmptmp = tmp + n;
+		tmp++;
+		while (tmp != _begin + _size)
+		{
+			while (tmptmp < _begin + _size)
+			{
+				i[1] = *tmptmp;
+				_alloc.destroy(tmptmp);
+				_alloc.construct(tmptmp, i[0]);
+				tmptmp += n;
+				i[0] = i[1];
+			}
+			_alloc.construct(tmptmp, i[0]);
+			i[0] = *tmp;
+			_alloc.destroy(tmp);
+			_alloc.construct(tmp, x);
+			tmptmp = tmp + n;
+			tmp++;
+		}
+		_alloc.construct(tmp, i[0]);
+	}
 }
 
 template<class T, class Alloc>
