@@ -402,7 +402,17 @@ void	ft_vector(void)
 
 	std::cout << BLUE << "Fill :" << ENDL;
 
-
+	/* Max size ************************************************************* */
+	if (DEBUG || vector_test(fb, vb) || fb.max_size() != vb.max_size())
+	{
+		std::cout << CROSS << "Max size\n" << RESET <<
+		"max_size=" << fb.max_size() << '\n' <<
+		"max_size=" << vb.max_size() << std::endl;
+		print_ft_vector(fb);
+		print_std_vector(vb);
+	}
+	else
+		std::cout << CHECK << "Max size" << ENDL;
 
 	std::cout << BLUE << "Range :" << ENDL;
 
@@ -412,6 +422,18 @@ void	ft_vector(void)
 	std::vector<int>	vd(va);
 
 	std::cout << BLUE << "Copy :" << ENDL;
+
+	/* Max size ************************************************************* */
+	if (DEBUG || vector_test(fd, vd) || fd.max_size() != vd.max_size())
+	{
+		std::cout << CROSS << "Max size\n" << RESET <<
+		"max_size=" << fd.max_size() << '\n' <<
+		"max_size=" << vd.max_size() << std::endl;
+		print_ft_vector(fd);
+		print_std_vector(vd);
+	}
+	else
+		std::cout << CHECK << "Max size" << ENDL;
 }
 
 int		main(void)

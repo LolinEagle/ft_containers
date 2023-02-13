@@ -32,6 +32,7 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		typedef typename Alloc::const_pointer			const_pointer;
 		typedef std::reverse_iterator<iterator>			reverse_iterator;
 		typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
+		typedef std::random_access_iterator_tag			iterator_category;
 	private:
 		allocator_type	_alloc;
 		iterator		_begin;
@@ -42,17 +43,17 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		explicit vector(const Alloc& alloc = Alloc());
 		explicit vector(size_type n, const T& value = T(),
 		const Alloc& alloc = Alloc());
-		template <class InputIterator>
-		vector(InputIterator first, InputIterator last,
-		const Alloc& alloc = Alloc())
-		{
-			_alloc = alloc;
-			_size = last - first;
-			_capacity = _size;
-			_begin = _alloc.allocate(_size);
-			for (size_type i = 0; i < _size; i++)
-				_alloc.construct(_begin + i, first + i);
-		}
+		// template <class InputIterator>
+		// vector(InputIterator first, InputIterator last,
+		// const Alloc& alloc = Alloc())
+		// {
+		// 	_alloc = alloc;
+		// 	_size = last - first;
+		// 	_capacity = _size;
+		// 	_begin = _alloc.allocate(_size);
+		// 	for (size_type i = 0; i < _size; i++)
+		// 		_alloc.construct(_begin + i, first + i);
+		// }
 		vector(const vector<T,Alloc>& x);
 		~vector();
 		vector<T,Alloc>& operator=(const vector<T,Alloc>& x);
@@ -160,7 +161,6 @@ vector<T, Alloc>::~vector()
 template<class T, class Alloc>
 vector<T, Alloc> &vector<T, Alloc>::operator=(const vector<T, Alloc> &copy)
 {
-	_alloc = copy._alloc;// Need to be a deep copy
 	_begin = _alloc.allocate(copy._capacity);
 	for (size_type i = 0; i < copy._size; i++)
 		_alloc.construct(_begin + i, *(copy._begin + i));
