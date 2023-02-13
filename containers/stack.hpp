@@ -46,7 +46,7 @@ stack<T, Container>::stack(const Container& container) : c(container)
 template <class T, class Container>
 bool operator==(const stack<T, Container>& x, const stack<T, Container>& y)
 {
-	if (x == y)
+	if (x.size() == y.size())
 		return (true);
 	return (false);
 }
@@ -54,7 +54,7 @@ bool operator==(const stack<T, Container>& x, const stack<T, Container>& y)
 template <class T, class Container>
 bool operator< (const stack<T, Container>& x, const stack<T, Container>& y)
 {
-	if (x < y)
+	if (x.size() < y.size())
 		return (true);
 	return (false);
 }
@@ -62,7 +62,7 @@ bool operator< (const stack<T, Container>& x, const stack<T, Container>& y)
 template <class T, class Container>
 bool operator!=(const stack<T, Container>& x, const stack<T, Container>& y)
 {
-	if (x != y)
+	if (x.size() != y.size())
 		return (true);
 	return (false);
 }
@@ -70,7 +70,7 @@ bool operator!=(const stack<T, Container>& x, const stack<T, Container>& y)
 template <class T, class Container>
 bool operator> (const stack<T, Container>& x, const stack<T, Container>& y)
 {
-	if (x > y)
+	if (x.size() > y.size())
 		return (true);
 	return (false);
 }
@@ -78,7 +78,7 @@ bool operator> (const stack<T, Container>& x, const stack<T, Container>& y)
 template <class T, class Container>
 bool operator>=(const stack<T, Container>& x, const stack<T, Container>& y)
 {
-	if (x >= y)
+	if (x.size() >= y.size())
 		return (true);
 	return (false);
 }
@@ -86,7 +86,7 @@ bool operator>=(const stack<T, Container>& x, const stack<T, Container>& y)
 template <class T, class Container>
 bool operator<=(const stack<T, Container>& x, const stack<T, Container>& y)
 {
-	if (x <= y)
+	if (x.size() <= y.size())
 		return (true);
 	return (false);
 }

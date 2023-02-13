@@ -277,8 +277,8 @@ void vector<T, Alloc>::push_back(const T& x)
 template<class T, class Alloc>
 void vector<T, Alloc>::pop_back()
 {
+	_alloc.destroy(end() - 1);
 	_size--;
-	_alloc.destroy(_begin + _size);
 }
 
 template<class T, class Alloc>
@@ -365,7 +365,19 @@ iterator last)
 template<class T, class Alloc>
 void vector<T, Alloc>::swap(vector<T,Alloc>& x)
 {
-	(void)x;
+	allocator_type	tmp_alloc = _alloc;
+	iterator		tmp_begin = _begin;
+	size_type		tmp_size = _size;
+	size_type		tmp_capacity = _capacity;
+
+	_alloc = x._alloc;
+	_begin = x._begin;
+	_size = x._size;
+	_capacity = x._capacity;
+	x._alloc = tmp_alloc;
+	x._begin = tmp_begin;
+	x._size = tmp_size;
+	x._capacity = tmp_capacity;
 }
 
 template<class T, class Alloc>
@@ -380,7 +392,7 @@ void vector<T, Alloc>::clear()
 template <class T, class Alloc>
 bool operator==(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x == y)
+	if (x.size() == y.size())
 		return (true);
 	return (false);
 }
@@ -388,7 +400,7 @@ bool operator==(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template <class T, class Alloc>
 bool operator< (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x < y)
+	if (x.size() < y.size())
 		return (true);
 	return (false);
 }
@@ -396,7 +408,7 @@ bool operator< (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template <class T, class Alloc>
 bool operator!=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x != y)
+	if (x.size() != y.size())
 		return (true);
 	return (false);
 }
@@ -404,7 +416,7 @@ bool operator!=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template <class T, class Alloc>
 bool operator> (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x > y)
+	if (x.size() > y.size())
 		return (true);
 	return (false);
 }
@@ -412,7 +424,7 @@ bool operator> (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template <class T, class Alloc>
 bool operator>=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x >= y)
+	if (x.size() >= y.size())
 		return (true);
 	return (false);
 }
@@ -420,7 +432,7 @@ bool operator>=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template <class T, class Alloc>
 bool operator<=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x <= y)
+	if (x.size() <= y.size())
 		return (true);
 	return (false);
 }
@@ -428,8 +440,7 @@ bool operator<=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template <class T, class Alloc>
 void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
 {
-	(void)x;
-	(void)y;
+	x.swap(y);
 }
 }
 
