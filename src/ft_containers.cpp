@@ -466,6 +466,34 @@ void	ft_vector(void)
 	}
 	else
 		std::cout << CHECK << "Max size" << ENDL;
+
+	/* Relational operators ************************************************* */
+	print_ft_vector(fa);
+	print_ft_vector(fb);
+	if (fa == fb)
+		std::cout << "fa == fb" << std::endl;
+	else
+		std::cout << "fa == fb Is not" << std::endl;
+	if (fa != fb)
+		std::cout << "fa != fb" << std::endl;
+	else
+		std::cout << "fa != fb Is not" << std::endl;
+	if (fa <  fb)
+		std::cout << "fa <  fb" << std::endl;
+	else
+		std::cout << "fa <  fb Is not" << std::endl;
+	if (fa <= fb)
+		std::cout << "fa <= fb" << std::endl;
+	else
+		std::cout << "fa <= fb Is not" << std::endl;
+	if (fa >  fb)
+		std::cout << "fa >  fb" << std::endl;
+	else
+		std::cout << "fa >  fb Is not" << std::endl;
+	if (fa >= fb)
+		std::cout << "fa >= fb" << std::endl;
+	else
+		std::cout << "fa >= fb Is not" << std::endl;
 }
 
 int		main(void)

@@ -110,7 +110,9 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		iterator insert(iterator position, const T& x);
 		void insert(iterator position, size_type n, const T& x);
 		template<class InputIt>
-		void insert(iterator position, InputIt first, InputIt last)
+		void insert(iterator position, InputIt first, InputIt last,
+		typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type*
+		= NULL)
 		{
 			size_type	new_size = last - first;
 			iterator	new_begin = _alloc.allocate(_size + new_size);

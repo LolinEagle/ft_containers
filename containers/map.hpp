@@ -10,4 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef MAP_HPP
+#define MAP_HPP
 
+#include <ft_containers.hpp>
+
+namespace ft
+{
+
+}
+
+#endif
