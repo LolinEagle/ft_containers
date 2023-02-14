@@ -13,14 +13,11 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 
-#include <iostream>
-
-// Debug
-#include <vector>
+#include <vector.hpp>
 
 namespace ft
 {
-template<class T, class Container = std::vector<T> > class stack
+template<class T, class Container = ft::vector<T> > class stack
 {
 	public:
 		typedef typename Container::value_type	value_type;

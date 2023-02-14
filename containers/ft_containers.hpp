@@ -17,7 +17,8 @@
 
 namespace ft
 {
-	template <class Iterator>
+	/* iterator_traits ****************************************************** */
+	template<class Iterator>
 	struct iterator_traits
 	{
 		typedef typename Iterator::difference_type		difference_type;
@@ -27,8 +28,8 @@ namespace ft
 		typedef typename Iterator::iterator_category	iterator_category;
 	};
 
-	template <class T>
-	struct iterator_traits<T *>
+	template<class T>
+	struct iterator_traits<T*>
 	{
 		typedef std::ptrdiff_t							difference_type;
 		typedef T										value_type;
@@ -37,8 +38,8 @@ namespace ft
 		typedef std::random_access_iterator_tag			iterator_category;
 	};
 
-	template <class T>
-	struct iterator_traits<const T *>
+	template<class T>
+	struct iterator_traits<const T*>
 	{
 		typedef std::ptrdiff_t							difference_type;
 		typedef T										value_type;
@@ -46,6 +47,65 @@ namespace ft
 		typedef const T&								reference;
 		typedef std::random_access_iterator_tag			iterator_category;
 	};
+
+	/* enable_if ************************************************************ */
+	template<bool B, typename T = void>
+	struct enable_if{};
+
+	template<typename T>
+	struct enable_if<true, T>{typedef T type;};
+	
+	/* is_integral ********************************************************** */
+	template<typename T>
+	struct is_integral{static const bool value = false;};
+
+	template<>
+	struct is_integral<bool>{static const bool value = true;};
+
+	template<>
+	struct is_integral<char>{static const bool value = true;};
+
+	template<>
+	struct is_integral<signed char>{static const bool value = true;};
+
+	template<>
+	struct is_integral<unsigned char>{static const bool value = true;};
+
+	template<>
+	struct is_integral<short>{static const bool value = true;};
+
+	template<>
+	struct is_integral<unsigned short>{static const bool value = true;};
+
+	template<>
+	struct is_integral<int>{static const bool value = true;};
+
+	template<>
+	struct is_integral<unsigned int>{static const bool value = true;};
+
+	template<>
+	struct is_integral<long>{static const bool value = true;};
+
+	template<>
+	struct is_integral<unsigned long>{static const bool value = true;};
+
+	template<>
+	struct is_integral<long long>{static const bool value = true;};
+
+	template<>
+	struct is_integral<unsigned long long>{static const bool value = true;};
+
+	/* equal **************************************************************** */
+
+
+	/* lexicographical_compare ********************************************** */
+
+
+	/* pair ***************************************************************** */
+
+
+	/* make_pair ************************************************************ */
+
 }
 
 #endif

@@ -13,7 +13,7 @@
 #ifndef HEADER_HPP
 #define HEADER_HPP
 
-/* Include ******************************************************************* */
+/* Include ****************************************************************** */
 #include <stack.hpp>
 #include <vector.hpp>
 #include <stack>
