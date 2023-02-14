@@ -43,28 +43,32 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		explicit vector(const Alloc& alloc = Alloc());
 		explicit vector(size_type n, const T& value = T(),
 		const Alloc& alloc = Alloc());
-		// template <class InputIterator>
-		// vector(InputIterator first, InputIterator last,
-		// const Alloc& alloc = Alloc())
-		// {
-		// 	_alloc = alloc;
-		// 	_size = last - first;
-		// 	_capacity = _size;
-		// 	_begin = _alloc.allocate(_size);
-		// 	for (size_type i = 0; i < _size; i++)
-		// 		_alloc.construct(_begin + i, first + i);
-		// }
+		template<class InputIt>
+		vector(InputIt first, InputIt last, const Alloc& alloc = Alloc(),
+		typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type*
+		= NULL)
+		{
+			_alloc = alloc;
+			_size = last - first;
+			_capacity = _size;
+			_begin = _alloc.allocate(_size);
+			for (size_type i = 0; i < _size; i++)
+				_alloc.construct(_begin + i, *(first + i));
+		}
 		vector(const vector<T,Alloc>& x);
 		~vector();
 		vector<T,Alloc>& operator=(const vector<T,Alloc>& x);
-		template <class InputIterator>
-		void assign(InputIterator first, InputIterator last)
+		template<class InputIt>
+		void assign(InputIt first, InputIt last,
+		typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type*
+		= NULL)
 		{
 			size_type	new_size = last - first;
-			iterator	new_begin = _alloc.allocate(_size);
+			iterator	new_begin = _alloc.allocate(new_size);
 			
 			for (size_type i = 0; i < new_size; i++)
-				_alloc.construct(new_begin + i, first + i);
+				_alloc.construct(new_begin + i, *(first + i));
+			_alloc.deallocate(_begin, _size);
 			_begin = new_begin;
 			_size = new_size;
 			_capacity = new_size;
@@ -105,8 +109,8 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		void pop_back();
 		iterator insert(iterator position, const T& x);
 		void insert(iterator position, size_type n, const T& x);
-		template <class InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last)
+		template<class InputIt>
+		void insert(iterator position, InputIt first, InputIt last)
 		{
 			size_type	new_size = last - first;
 			iterator	new_begin = _alloc.allocate(_size + new_size);
@@ -452,7 +456,7 @@ void vector<T, Alloc>::clear()
 
 /* Non-member function overloads ******************************************** */
 
-template <class T, class Alloc>
+template<class T, class Alloc>
 bool operator==(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
 	if (x.size() == y.size())
@@ -460,7 +464,7 @@ bool operator==(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 	return (false);
 }
 
-template <class T, class Alloc>
+template<class T, class Alloc>
 bool operator< (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
 	if (x.size() < y.size())
@@ -468,7 +472,7 @@ bool operator< (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 	return (false);
 }
 
-template <class T, class Alloc>
+template<class T, class Alloc>
 bool operator!=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
 	if (x.size() != y.size())
@@ -476,7 +480,7 @@ bool operator!=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 	return (false);
 }
 
-template <class T, class Alloc>
+template<class T, class Alloc>
 bool operator> (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
 	if (x.size() > y.size())
@@ -484,7 +488,7 @@ bool operator> (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 	return (false);
 }
 
-template <class T, class Alloc>
+template<class T, class Alloc>
 bool operator>=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
 	if (x.size() >= y.size())
@@ -492,7 +496,7 @@ bool operator>=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 	return (false);
 }
 
-template <class T, class Alloc>
+template<class T, class Alloc>
 bool operator<=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
 	if (x.size() <= y.size())
@@ -500,7 +504,7 @@ bool operator<=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 	return (false);
 }
 
-template <class T, class Alloc>
+template<class T, class Alloc>
 void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
 {
 	x.swap(y);

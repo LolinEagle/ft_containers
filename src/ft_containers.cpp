@@ -93,6 +93,7 @@ bool	vector_test(ft::vector<int>& ft, std::vector<int>& std)
 
 void	ft_vector(void)
 {
+	/* Default ************************************************************** */
 	ft ::vector<int>	fa;
 	std::vector<int>	va;
 
@@ -397,6 +398,29 @@ void	ft_vector(void)
 	else
 		std::cout << CHECK << "Back" << ENDL;
 
+	/* Assign range ********************************************************* */
+	ft ::vector<int>	frange;
+	std::vector<int>	vrange;
+
+	frange.assign(fa.begin(), fa.end());
+	vrange.assign(va.begin(), va.end());
+	if (DEBUG || vector_test(frange, vrange))
+		std::cout << CROSS << "Assign range" << ENDL;
+	else
+		std::cout << CHECK << "Assign range" << ENDL;
+
+	/* Assign fill ********************************************************** */
+	ft ::vector<int>	ffill;
+	std::vector<int>	vfill;
+
+	ffill.assign(8, 8);
+	vfill.assign(8, 8);
+	if (DEBUG || vector_test(ffill, vfill))
+		std::cout << CROSS << "Assign fill" << ENDL;
+	else
+		std::cout << CHECK << "Assign fill" << ENDL;
+	
+	/* Fill ***************************************************************** */
 	ft ::vector<int>	fb(8, 8);
 	std::vector<int>	vb(8, 8);
 
@@ -414,10 +438,18 @@ void	ft_vector(void)
 	else
 		std::cout << CHECK << "Max size" << ENDL;
 
+	/* Range ***************************************************************** */
+	ft ::vector<int>	fc(fa.begin(), fa.end());
+	std::vector<int>	vc(va.begin(), va.end());
+
 	std::cout << BLUE << "Range :" << ENDL;
 
+	if (DEBUG || vector_test(fc, vfill))
+		std::cout << CROSS << "Range" << ENDL;
+	else
+		std::cout << CHECK << "Range" << ENDL;
 
-
+	/* Copy ***************************************************************** */
 	ft ::vector<int>	fd(fa);
 	std::vector<int>	vd(va);
 
