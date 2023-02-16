@@ -95,10 +95,30 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		void reserve(size_type n);
 
 		/* Element access *************************************************** */
-		reference operator[](size_type n){return (_begin[n]);}
-		const_reference operator[](size_type n) const{return (_begin[n]);}
-		const_reference at(size_type n) const{return (_begin[n]);}
-		reference at(size_type n){return (_begin[n]);}
+		reference operator[](size_type n)
+		{
+			if (n < 0 || n >= _size)
+				throw (std::out_of_range("out of range exception"));
+			return (_begin[n]);
+		}
+		const_reference operator[](size_type n) const
+		{
+			if (n < 0 || n >= _size)
+				throw (std::out_of_range("out of range exception"));
+			return (_begin[n]);
+		}
+		const_reference at(size_type n) const
+		{
+			if (n < 0 || n >= _size)
+				throw (std::out_of_range("out of range exception"));
+			return (_begin[n]);
+		}
+		reference at(size_type n)
+		{
+			if (n < 0 || n >= _size)
+				throw (std::out_of_range("out of range exception"));
+			return (_begin[n]);
+		}
 		reference front(){return(*_begin);}
 		const_reference front() const{return(*_begin);}
 		reference back(){return(*(_begin + _size - 1));}
@@ -461,7 +481,7 @@ void vector<T, Alloc>::clear()
 template<class T, class Alloc>
 bool operator==(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x.size() == y.size())
+	if (x.size() == y.size() && equal(x.begin(), x.end(), y.begin()))
 		return (true);
 	return (false);
 }
@@ -469,7 +489,7 @@ bool operator==(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template<class T, class Alloc>
 bool operator< (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x.size() < y.size())
+	if (lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()))
 		return (true);
 	return (false);
 }
@@ -477,7 +497,7 @@ bool operator< (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template<class T, class Alloc>
 bool operator!=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x.size() != y.size())
+	if (x.size() != y.size() || !equal(x.begin(), x.end(), y.begin()))
 		return (true);
 	return (false);
 }
@@ -485,7 +505,7 @@ bool operator!=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template<class T, class Alloc>
 bool operator> (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x.size() > y.size())
+	if (lexicographical_compare(y.begin(), y.end(), x.begin(), x.end()))
 		return (true);
 	return (false);
 }
@@ -493,7 +513,7 @@ bool operator> (const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template<class T, class Alloc>
 bool operator>=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x.size() >= y.size())
+	if (!lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()))
 		return (true);
 	return (false);
 }
@@ -501,7 +521,7 @@ bool operator>=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 template<class T, class Alloc>
 bool operator<=(const vector<T,Alloc>& x, const vector<T,Alloc>& y)
 {
-	if (x.size() <= y.size())
+	if (!lexicographical_compare(y.begin(), y.end(), x.begin(), x.end()))
 		return (true);
 	return (false);
 }

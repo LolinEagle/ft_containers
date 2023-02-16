@@ -165,7 +165,7 @@ void	ft_vector(void)
 		std::cout << CHECK << "Insert single element" << ENDL;
 
 	/* Insert fill ********************************************************** */
-	fa.insert(fa.begin() + 2, (size_t)3, 0);// Need a cast for some resson
+	fa.insert(fa.begin() + 2, 3, 0);
 	va.insert(va.begin() + 2, 3, 0);
 	if (DEBUG || vector_test(fa, va) || *(fa.begin() + 3) != *(va.begin() + 3))
 	{
@@ -369,14 +369,17 @@ void	ft_vector(void)
 		std::cout << CHECK << "Operator []" << ENDL;
 
 	/* At ******************************************************************* */
-	if (DEBUG || vector_test(fa, va) || fa.at(4) != va.at(4))
+	for (size_t i = 0; i < va.size(); i++)
 	{
-		std::cout << CROSS << "At\n" << RESET <<
-		"at=" << fa.at(4) << '\n' <<
-		"at=" << va.at(4) << std::endl;
+		if (DEBUG || vector_test(fa, va) || fa.at(i) != va.at(i))
+		{
+			std::cout << CROSS << "At\n" << RESET <<
+			"at=" << fa.at(i) << '\n' <<
+			"at=" << va.at(i) << std::endl;
+		}
+		else if (i == va.size() - 1)
+			std::cout << CHECK << "At" << ENDL;
 	}
-	else
-		std::cout << CHECK << "At" << ENDL;
 
 	/* Front **************************************************************** */
 	if (DEBUG || vector_test(fa, va) || fa.front() != va.front())
@@ -426,17 +429,10 @@ void	ft_vector(void)
 
 	std::cout << BLUE << "Fill :" << ENDL;
 
-	/* Max size ************************************************************* */
-	if (DEBUG || vector_test(fb, vb) || fb.max_size() != vb.max_size())
-	{
-		std::cout << CROSS << "Max size\n" << RESET <<
-		"max_size=" << fb.max_size() << '\n' <<
-		"max_size=" << vb.max_size() << std::endl;
-		print_ft_vector(fb);
-		print_std_vector(vb);
-	}
+	if (DEBUG || vector_test(fb, vb))
+		std::cout << CROSS << "Fill" << ENDL;
 	else
-		std::cout << CHECK << "Max size" << ENDL;
+		std::cout << CHECK << "Fill" << ENDL;
 
 	/* Range ***************************************************************** */
 	ft ::vector<int>	fc(fa.begin(), fa.end());
@@ -455,51 +451,43 @@ void	ft_vector(void)
 
 	std::cout << BLUE << "Copy :" << ENDL;
 
-	/* Max size ************************************************************* */
-	if (DEBUG || vector_test(fd, vd) || fd.max_size() != vd.max_size())
-	{
-		std::cout << CROSS << "Max size\n" << RESET <<
-		"max_size=" << fd.max_size() << '\n' <<
-		"max_size=" << vd.max_size() << std::endl;
-		print_ft_vector(fd);
-		print_std_vector(vd);
-	}
+	if (DEBUG || vector_test(fd, vd))
+		std::cout << CROSS << "Copy" << ENDL;
 	else
-		std::cout << CHECK << "Max size" << ENDL;
+		std::cout << CHECK << "Copy" << ENDL;
 
 	/* Relational operators ************************************************* */
-	print_ft_vector(fa);
-	print_ft_vector(fb);
-	if (fa == fb)
-		std::cout << "fa == fb" << std::endl;
+	std::cout << BLUE << "Relational operators :" << ENDL;
+
+	if ((fa == fb) == (va == vb))
+		std::cout << CHECK << "==" << ENDL;
 	else
-		std::cout << "fa == fb Is not" << std::endl;
-	if (fa != fb)
-		std::cout << "fa != fb" << std::endl;
+		std::cout << CROSS << "==" << ENDL;
+	if ((fa != fb) == (va != vb))
+		std::cout << CHECK << "!=" << ENDL;
 	else
-		std::cout << "fa != fb Is not" << std::endl;
-	if (fa <  fb)
-		std::cout << "fa <  fb" << std::endl;
+		std::cout << CROSS << "!=" << ENDL;
+	if ((fa <  fb) == (va <  vb))
+		std::cout << CHECK << "< " << ENDL;
 	else
-		std::cout << "fa <  fb Is not" << std::endl;
-	if (fa <= fb)
-		std::cout << "fa <= fb" << std::endl;
+		std::cout << CROSS << "< " << ENDL;
+	if ((fa <= fb) == (va <= vb))
+		std::cout << CHECK << "<=" << ENDL;
 	else
-		std::cout << "fa <= fb Is not" << std::endl;
-	if (fa >  fb)
-		std::cout << "fa >  fb" << std::endl;
+		std::cout << CROSS << "<=" << ENDL;
+	if ((fa >  fb) == (va >  vb))
+		std::cout << CHECK << "> " << ENDL;
 	else
-		std::cout << "fa >  fb Is not" << std::endl;
-	if (fa >= fb)
-		std::cout << "fa >= fb" << std::endl;
+		std::cout << CROSS << "> " << ENDL;
+	if ((fa >= fb) == (va >= vb))
+		std::cout << CHECK << ">=" << ENDL;
 	else
-		std::cout << "fa >= fb Is not" << std::endl;
+		std::cout << CROSS << ">=" << ENDL;
 }
 
 int		main(void)
 {
 	ft_vector();
-	std::cout << std::endl;
 	ft_stack();
 	return (0);
 }

@@ -48,6 +48,9 @@ namespace ft
 		typedef std::random_access_iterator_tag			iterator_category;
 	};
 
+	/* reverse_iterator ***************************************************** */
+
+
 	/* enable_if ************************************************************ */
 	template<bool B, typename T = void>
 	struct enable_if{};
