@@ -483,11 +483,65 @@ void	ft_vector(void)
 		std::cout << CHECK << ">=" << ENDL;
 	else
 		std::cout << CROSS << ">=" << ENDL;
+
+	/* Implement ************************************************************ */
+	std::cout << BLUE << "Implement :" << ENDL;
+
+	/* iterator_traits ****************************************************** */
+	typedef ft::iterator_traits<ft::vector<int> >	traits;
+	if (typeid(traits::iterator_category) ==
+	typeid(std::random_access_iterator_tag))
+		std::cout << CHECK << "iterator_traits" << ENDL;
+	else
+		std::cout << CROSS << "iterator_traits" << ENDL;
+
+	/* reverse_iterator ***************************************************** */
+	for (size_t i = 0; i < va.size(); i++)
+	{
+		ft ::reverse_iterator<ft ::vector<int>::iterator>f_it = fa.rbegin() + i;
+		std::reverse_iterator<std::vector<int>::iterator>v_it = va.rbegin() + i;
+
+		if (DEBUG || vector_test(fa, va) || *f_it != *v_it)
+		{
+			std::cout << CROSS << "reverse_iterator\n" << RESET <<
+			"*f_it=" << *f_it << '\n' <<
+			"*v_it=" << *v_it << std::endl;
+		}
+		else if (i == va.size() - 1)
+			std::cout << CHECK << "reverse_iterator" << ENDL;
+	}
+
+	/* enable_if ************************************************************ */
+
+
+	/* is_integral ********************************************************** */
+
+
+	/* equal **************************************************************** */
+
+
+	/* lexicographical_compare ********************************************** */
+
+
+	/* pair ***************************************************************** */
+
+
+	/* make_pair ************************************************************ */
+
 }
 
-int		main(void)
+void	ft_map(void)
 {
-	ft_vector();
-	ft_stack();
+	std::cout << BLUE << "___Map___" << LINE << "\nDefault :" << ENDL;
+}
+
+int		main(int ac, char **av)
+{
+	if (ac < 2 || av[1][0] == 's')
+		ft_stack();
+	if (ac < 2 || av[1][0] == 'v')
+		ft_vector();
+	if (ac < 2 || av[1][0] == 'm')
+		ft_map();
 	return (0);
 }

@@ -14,13 +14,16 @@
 #define HEADER_HPP
 
 /* Include ****************************************************************** */
+#include <typeinfo>
 #include <stack.hpp>
 #include <vector.hpp>
+#include <map.hpp>
 #include <stack>
 #include <vector>
+#include <map>
 
 /* Colors ******************************************************************* */
-#define RESET	"\033[0m"
+#define RESET	"\033[00m"
 #define BLACK	"\033[30m"
 #define RED		"\033[31m"
 #define GREEN	"\033[32m"
