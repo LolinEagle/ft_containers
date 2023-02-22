@@ -14,7 +14,7 @@
 #include <string>
 #include <deque>
 
-#if 1 //CREATE A REAL STL EXAMPLE
+#if 1 // CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
 	}
 	catch(const std::exception& e)
 	{
-		//NORMAL ! :P
+		// NORMAL ! :P
 	}
 	
 	for (int i = 0; i < COUNT; ++i)

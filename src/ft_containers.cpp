@@ -510,29 +510,27 @@ void	ft_vector(void)
 		else if (i == va.size() - 1)
 			std::cout << CHECK << "reverse_iterator" << ENDL;
 	}
-
-	/* enable_if ************************************************************ */
-
-
-	/* is_integral ********************************************************** */
-
-
-	/* equal **************************************************************** */
-
-
-	/* lexicographical_compare ********************************************** */
-
-
-	/* pair ***************************************************************** */
-
-
-	/* make_pair ************************************************************ */
-
 }
 
 void	ft_map(void)
 {
+	/* Default ************************************************************** */
+	ft ::map<int, std::string>	fa;
+	std::map<int, std::string>	ma;
+
 	std::cout << BLUE << "___Map___" << LINE << "\nDefault :" << ENDL;
+
+	/* Range ***************************************************************** */
+	// ft ::map<int, std::string>	fb(fa.begin(), fa.end());
+	// std::map<int, std::string>	mb(ma.begin(), ma.end());
+
+	std::cout << BLUE << "Range :" << ENDL;
+
+	/* Copy ***************************************************************** */
+	ft ::map<int, std::string>	fc(fa);
+	std::map<int, std::string>	vc(ma);
+
+	std::cout << BLUE << "Copy :" << ENDL;
 }
 
 int		main(int ac, char **av)

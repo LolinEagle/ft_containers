@@ -30,14 +30,14 @@ class Alloc = std::allocator<pair<const Key, T> > > class map
 		typedef typename Alloc::const_reference			const_reference;
 		typedef T*										iterator;
 		typedef const T*								const_iterator;
-		typedef std::size_t								size_type;
+		typedef size_t									size_type;
 		typedef std::ptrdiff_t							difference_type;
 		typedef typename Alloc::pointer					pointer;
 		typedef typename Alloc::const_pointer			const_pointer;
-		typedef std::reverse_iterator<iterator>			reverse_iterator;
-		typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
-		class value_compare :
-		public std::binary_function<value_type, value_type, bool>
+		typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+		class value_compare
+		: public std::binary_function<value_type, value_type, bool>
 		{
 			friend class map;
 			protected:
@@ -54,13 +54,32 @@ class Alloc = std::allocator<pair<const Key, T> > > class map
 	public:
 		/* Constructor & Destructor ***************************************** */
 		explicit map(const Compare& comp = Compare(),
-		const Alloc& = Alloc());
+		const Alloc& alloc = Alloc())
+		{
+			(void)comp;
+			(void)alloc;
+		}
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last,
-		const Compare& comp = Compare(), const Alloc& = Alloc());
-		map(const map<Key,T,Compare,Alloc>& x);
-		~map();
-		map<Key,T,Compare,Alloc>&operator=(const map<Key,T,Compare,Alloc>& x);
+		const Compare& comp = Compare(), const Alloc& alloc = Alloc())
+		{
+			(void)first;
+			(void)last;
+			(void)comp;
+			(void)alloc;
+		}
+		map(const map<Key,T,Compare,Alloc>& x)
+		{
+			*this = x;
+		}
+		~map()
+		{
+		}
+		map<Key,T,Compare,Alloc>&operator=(const map<Key,T,Compare,Alloc>& x)
+		{
+			(void)x;
+			return (*this);
+		}
 
 		/* Iterators ******************************************************** */
 		iterator begin();
@@ -73,9 +92,18 @@ class Alloc = std::allocator<pair<const Key, T> > > class map
 		const_reverse_iterator rend() const;
 
 		/* Capacity ********************************************************* */
-		bool empty() const;
-		size_type size() const;
-		size_type max_size() const;
+		bool empty() const
+		{
+			return (false);
+		}
+		size_type size() const
+		{
+			return (0);
+		}
+		size_type max_size() const
+		{
+			return (0);
+		}
 
 		/* Element access *************************************************** */
 		T& operator[](const key_type& x);
@@ -161,8 +189,7 @@ const map<Key,T,Compare,Alloc>& y)
 
 /* specialized algorithms *************************************************** */
 template <class Key, class T, class Compare, class Alloc>
-void swap(map<Key,T,Compare,Alloc>& x,
-map<Key,T,Compare,Alloc>& y)
+void swap(map<Key,T,Compare,Alloc>& x, map<Key,T,Compare,Alloc>& y)
 {
 	(void)x;
 	(void)y;

@@ -15,6 +15,9 @@
 
 #include <ft_containers.hpp>
 
+#define INPUT typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>\
+::type* = NULL
+
 namespace ft
 {
 template<class T, class Alloc = std::allocator<T> > class vector
@@ -24,14 +27,14 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		typedef typename Alloc::const_reference			const_reference;
 		typedef T*										iterator;
 		typedef const T*								const_iterator;
-		typedef std::size_t								size_type;
+		typedef size_t									size_type;
 		typedef std::ptrdiff_t							difference_type;
 		typedef T										value_type;
 		typedef Alloc									allocator_type;
 		typedef typename Alloc::pointer					pointer;
 		typedef typename Alloc::const_pointer			const_pointer;
-		typedef std::reverse_iterator<iterator>			reverse_iterator;
-		typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
+		typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 		typedef std::random_access_iterator_tag			iterator_category;
 	private:
 		allocator_type	_alloc;
@@ -44,30 +47,26 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		explicit vector(size_type n, const T& value = T(),
 		const Alloc& alloc = Alloc());
 		template<class InputIt>
-		vector(InputIt first, InputIt last, const Alloc& alloc = Alloc(),
-		typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type*
-		= NULL)
+		vector(InputIt first, InputIt last, const Alloc& alloc = Alloc(), INPUT)
 		{
 			_alloc = alloc;
-			_size = last - first;
+			_size = std::distance(first, last);
 			_capacity = _size;
 			_begin = _alloc.allocate(_size);
 			for (size_type i = 0; i < _size; i++)
-				_alloc.construct(_begin + i, *(first + i));
+				_alloc.construct(_begin + i, *(first++));
 		}
 		vector(const vector<T,Alloc>& x);
 		~vector();
 		vector<T,Alloc>& operator=(const vector<T,Alloc>& x);
 		template<class InputIt>
-		void assign(InputIt first, InputIt last,
-		typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type*
-		= NULL)
+		void assign(InputIt first, InputIt last, INPUT)
 		{
-			size_type	new_size = last - first;
+			size_type	new_size = std::distance(first, last);
 			iterator	new_begin = _alloc.allocate(new_size);
 			
 			for (size_type i = 0; i < new_size; i++)
-				_alloc.construct(new_begin + i, *(first + i));
+				_alloc.construct(new_begin + i, *(first++));
 			_alloc.deallocate(_begin, _size);
 			_begin = new_begin;
 			_size = new_size;
@@ -130,18 +129,16 @@ template<class T, class Alloc = std::allocator<T> > class vector
 		iterator insert(iterator position, const T& x);
 		void insert(iterator position, size_type n, const T& x);
 		template<class InputIt>
-		void insert(iterator position, InputIt first, InputIt last,
-		typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type*
-		= NULL)
+		void insert(iterator position, InputIt first, InputIt last, INPUT)
 		{
-			size_type	new_size = last - first;
+			size_type	new_size = std::distance(first, last);;
 			iterator	new_begin = _alloc.allocate(_size + new_size);
 			iterator	tmp = new_begin;
 
 			for (iterator it = _begin; it != position; it++)
 				_alloc.construct(tmp++, *it);
 			for (size_type i = 0; i < new_size; i++)
-				_alloc.construct(tmp++, *(first + i));
+				_alloc.construct(tmp++, *(first++));
 			for (; position != _begin + _size; position++)
 				_alloc.construct(tmp++, *position);
 			_alloc.deallocate(_begin, _size);
@@ -434,7 +431,7 @@ template<class T, class Alloc>
 typename vector<T, Alloc>::iterator vector<T, Alloc>::erase(iterator first,
 iterator last)
 {
-	size_type	new_size = last - first;
+	size_type	new_size = std::distance(first, last);;
 	iterator	new_begin = _alloc.allocate(_size - new_size);
 	iterator	tmp = new_begin;
 	iterator	ret;

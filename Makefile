@@ -39,7 +39,7 @@ run:${NAME}
 
 debug:${NAME}
 	clear
-	valgrind ./${NAME}
+	valgrind ./${NAME} m
 
 ${OBJ_PATH}%.o:${SRC_PATH}%.cpp
 	${CPP} ${CPPFLAGS} ${INC} -c $< -o $@
