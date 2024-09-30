@@ -1,5 +1,5 @@
 # Containers
-The standard C++ containers have all a specific usage. This project is a re-implement of them.
+The standard C++ containers have all a specific usage. This project is a re-implementation of them.
 
 ## Deployment
 To deploy this project run
